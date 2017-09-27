@@ -21,3 +21,4 @@ and running the resulting executable.
 
 1.  Go to “Start” -> Open “Visual Studio 2015.” Note there are older version of VS2015; do not use them.
 2.  In the Visual Studio startup screen, select “Open Project…” under “Start.” Alternatively, you can do File -> Open -> Project / Solution (Ctrl + Shift + O).
+![](new_project.jpg)
