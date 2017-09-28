@@ -60,6 +60,7 @@ VS should highlight the lines "VME_Interface_Funcs.h" and "VME_Interface_Defs.h,
 9. Now let's put code in that actually calls the VME. Here is the code:
 
 ```c++
+
 #include <iostream>
 #include <cstdio>
 #include "VME_Interface_Funcs.h"
@@ -70,7 +71,9 @@ VS should highlight the lines "VME_Interface_Funcs.h" and "VME_Interface_Defs.h,
 int main() {
 
 	/**
-	Sample program which does a trial run using the VME_Interface.DLL library. This is the result of the tutorial from https://github.com/Smattacus/Tutorials/blob/master/Calling_DLL/cpp_file_calling_VME_Interface.md.
+	Sample program which does a trial run using the VME_Interface.DLL library. 
+	This is the result of the tutorial from 
+	https://github.com/Smattacus/Tutorials/blob/master/Calling_DLL/cpp_file_calling_VME_Interface.md.
 
 	Or, alternatively, smattacus.github.io/Tutorials/Calling_DLL/
 	*/
