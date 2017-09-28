@@ -27,6 +27,8 @@ and running the resulting executable.
 3.  In the file dialog that opens, go to “My Documents” -> “Visual Studio 2015” (NOT 2013 or 2010) -> “Projects” -> “VME_Interface” -> VME_Interface.sln. Alternatively, the full file path is C:\Users\SKIFFLAB\Documents\Visual Studio 2015\Projects\VME_Interface\VME_Interface.sln. Click “Open” to open the solution.
 4.  MSVS2015 will open the full solution. There are a variety of projects inside this solution for different data acquisition processes. Before we create a new project in this solution, I want to point out the “VME_Interface” library: ![](vme_interface_cpp.jpg) In the Solution Explorer, there are a number of solutions. At the bottom (of the time of writing) is the solution “VME_Interface.” The source file “VME_Interface.cpp” contains all the methods that we can call using the DLL. The header file “VME_Interface_Funcs.h” contains the declarations of the externally usable  (“public”) functions. *At this point, do NOT make any modifications to VME_Interface.cpp.*
 
+* * * 
+
 Now we will create a Project and add it to the VME_Interface solution. This
 way, MSVS2015 will play nice with references when we try to link the code we
 write to the functions inside VME_Interface.dll.
@@ -141,3 +143,10 @@ and if you did everything right a file should be written to D:\TestFiles\Demo.
 
 15.	Now let's take this version of the build and put it in a separate folder. This way we can keep developing, and use this
 executable when we want to do other data acquisition tasks. Open a windows folder and navigate to the x64 build directory: C:\Users\SKIFFLAB\Documents\Visual Studio 2015\Projects\VME_Interface\x64\Release. Copy "Demonstration_VME_Library_Call.exe" and all the DLLs from that folder to a location of your choosing - it should be 4 files total. You need all the DLLs locally in the directory for it to work. Windows, upon running a program, searches for the needed DLLs in the local directory first by default. If it doesn't find any, it then checks other directories.![](moving_exe_and_dlls.png)
+
+* * * 
+
+That's it! You are on your way to writing other programs. Search around the projects included in the VME_Interface solution
+to get ideas of what to do. There are projects that acquire data using multithreading for minimizing downtime, photon
+timestamping, synchronizing between different computers with Windows RPS, synchronizing photon acquisition with voltage digitization, and others.
+
