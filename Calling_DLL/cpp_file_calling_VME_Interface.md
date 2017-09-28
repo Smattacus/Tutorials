@@ -100,3 +100,11 @@ int main() {
 
 }
 ```
+10.	Try building the code (Ctrl + Shift + B). You should get linker errors:
+```
+1>VME_Demo.obj : error LNK2001: unresolved external symbol "public: static int __cdecl VME::USB::HDF5_Write(unsigned int *,char *,struct Struck_info *,int,int)" (?HDF5_Write@USB@VME@@SAHPEAIPEADPEAUStruck_info@@HH@Z)
+1>VME_Demo.obj : error LNK2001: unresolved external symbol "public: static int __cdecl VME::USB::STRUCK_MCS_Acquire(int,unsigned int *,int)" (?STRUCK_MCS_Acquire@USB@VME@@SAHHPEAIH@Z)
+1>VME_Demo.obj : error LNK2001: unresolved external symbol "public: static void __cdecl VME::USB::STRUCK_MCS_Setup(int,int,int)" (?STRUCK_MCS_Setup@USB@VME@@SAXHHH@Z)
+1>VME_Demo.obj : error LNK2001: unresolved external symbol "public: static void __cdecl VME::USB::Close_Connection(int *)" (?Close_Connection@USB@VME@@SAXPEAH@Z)
+1>VME_Demo.obj : error LNK2001: unresolved external symbol "public: static int __cdecl VME::USB::Initialize_Connection(int *)" (?Initialize_Connection@USB@VME@@SAHPEAH@Z)
+```
