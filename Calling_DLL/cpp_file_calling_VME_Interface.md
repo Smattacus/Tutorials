@@ -36,5 +36,19 @@ on the data computer.
 
 1.  Go to File -> Add -> New Project. Select "Win32 Console Application." For the name, enter "Demonstration_VME_Library_Call".
 2.  In the Win32 Application Wizard that appears, click "Next." In the final screen select "Console Application" and "Empty Project" like so: ![](win32_wizard.jpg)
+3.  Create a new source file in your new project. In the Project Explorer pane, expand the "Demonstration_VME_Library_Call" project, right click on "Source Files," and select "C++ Source File." Enter a new name for your soure file - I chose "VME_Demo.cpp"
+4.  Add some code to it:
 
+```c++
+#include <iostream>
+#include <cstdio>
+#include "VME_Interface_Funcs.h"
+#include "VME_Interface_Defs"
 
+#define _HDF5USEDLL_
+
+int main() {
+}
+```
+
+VS should highlight the lines "VME_Interface_Funcs.h" and "VME_Interface_Defs.h," since it doesn't know where they are. Let's fix that.
