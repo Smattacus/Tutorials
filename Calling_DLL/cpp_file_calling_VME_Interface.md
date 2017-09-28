@@ -30,3 +30,11 @@ and running the resulting executable.
 Now we will create a Project and add it to the VME_Interface solution. This
 way, MSVS2015 will play nice with references when we try to link the code we
 write to the functions inside VME_Interface.dll.
+
+The Project that we create will also demonstrate linking all the necessary dependencies in Visual Studio 2015 and where they are 
+on the data computer.
+
+1.  Go to File -> Add -> New Project. Select "Win32 Console Application." For the name, enter "Demonstration_VME_Library_Call".
+2.  In the Win32 Application Wizard that appears, click "Next." In the final screen select "Console Application" and "Empty Project" like so: ![](win32_wizard.jpg)
+
+
