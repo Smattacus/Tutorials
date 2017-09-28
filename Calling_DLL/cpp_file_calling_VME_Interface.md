@@ -108,3 +108,6 @@ int main() {
 1>VME_Demo.obj : error LNK2001: unresolved external symbol "public: static void __cdecl VME::USB::Close_Connection(int *)" (?Close_Connection@USB@VME@@SAXPEAH@Z)
 1>VME_Demo.obj : error LNK2001: unresolved external symbol "public: static int __cdecl VME::USB::Initialize_Connection(int *)" (?Initialize_Connection@USB@VME@@SAHPEAH@Z)
 ```
+11.	Tell MSVS where to link this code. In the Solution Explorer, in the "Demonstration_VME_Library_Call" Project, right click on "References," select "Add Reference," and check the box for "VME_Interface." This is why we add our new project to the
+already existing solution - it makes it easier to link to libraries.
+![](add_ref.PNG)
