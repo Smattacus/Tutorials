@@ -54,7 +54,7 @@ int main() {
 VS should highlight the lines "VME_Interface_Funcs.h" and "VME_Interface_Defs.h," since it doesn't know where they are. Let's fix that.
 
 5.  Right click on the Project name for "Demonstration_VME_Library_Call." Select "Properties"
-6.  In the Property Pages, go to the "C / C++" tab. For "Configuration" select "All Configurations" and for "Platform" select "x64" or "Active (x64)."
+6.  In the Property Pages, go to the "C / C++" tab. For "Configuration" select "All Configurations" and for "Platform" select "x64" or "Active (x64)." ![](build_config.png)
 7.  In "General," open the "Additional Include Directories" box. Add the path "C:\Users\SKIFFLAB\Documents\Visual Studio 2015\Projects\VME_Interface\VME_Interface" as shown: ![](adding_include.png)
 8.  Do the same thing in step 6 for the CAEN VME libraries. These are the libraries that talk to the driver which connects to the VME board. Add the path "C:\Program Files\CAEN\VME\include."
 9. Try building the small program above - it should compile without any issues. This is a good way to check any included dependencies have been resolved. Select the "Release" and "x64" configurations on the toolbar.
@@ -140,4 +140,4 @@ and if you did everything right a file should be written to D:\TestFiles\Demo.
 * * *
 
 15.	Now let's take this version of the build and put it in a separate folder. This way we can keep developing, and use this
-executable when we want to do other data acquisition tasks. Open a windows folder and navigate to the x64 build directory: C:\Users\SKIFFLAB\Documents\Visual Studio 2015\Projects\VME_Interface\x64\Release.
+executable when we want to do other data acquisition tasks. Open a windows folder and navigate to the x64 build directory: C:\Users\SKIFFLAB\Documents\Visual Studio 2015\Projects\VME_Interface\x64\Release. Copy "Demonstration_VME_Library_Call.exe" and all the DLLs from that folder to a location of your choosing - it should be 4 files total. You need all the DLLs locally in the directory for it to work. Windows, upon running a program, searches for the needed DLLs in the local directory first by default. If it doesn't find any, it then checks other directories.![](moving_exe_and_dlls.png)
