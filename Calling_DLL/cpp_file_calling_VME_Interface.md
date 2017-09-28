@@ -52,3 +52,6 @@ int main() {
 ```
 
 VS should highlight the lines "VME_Interface_Funcs.h" and "VME_Interface_Defs.h," since it doesn't know where they are. Let's fix that.
+
+5.  Right click on the Project name for "Demonstration_VME_Library_Call." Select "Properties"
+6.  In the Property Pages, go to the "C / C++" tab. In "General," open the "Additional Include Directories" box. Add the path "C:\Users\SKIFFLAB\Documents\Visual Studio 2015\Projects\VME_Interface\VME_Interface" as shown: ![](adding_include.png)
