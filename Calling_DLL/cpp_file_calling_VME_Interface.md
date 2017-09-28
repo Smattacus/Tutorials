@@ -43,7 +43,7 @@ on the data computer.
 #include <iostream>
 #include <cstdio>
 #include "VME_Interface_Funcs.h"
-#include "VME_Interface_Defs"
+#include "VME_Interface_Defs.h"
 
 #define _HDF5USEDLL_
 
@@ -55,3 +55,45 @@ VS should highlight the lines "VME_Interface_Funcs.h" and "VME_Interface_Defs.h,
 
 5.  Right click on the Project name for "Demonstration_VME_Library_Call." Select "Properties"
 6.  In the Property Pages, go to the "C / C++" tab. In "General," open the "Additional Include Directories" box. Add the path "C:\Users\SKIFFLAB\Documents\Visual Studio 2015\Projects\VME_Interface\VME_Interface" as shown: ![](adding_include.png)
+7.  Do the same thing in step 6 for the CAEN VME libraries. These are the libraries that talk to the driver which connects to the VME board. Add the path "C:\Program Files\CAEN\VME\include."
+8. Try building the small program above - it should compile without any issues. This is a good way to check any included dependencies have been resolved.
+9. Now let's put code in that actually calls the VME. Here is the code:
+
+```c++
+#include <iostream>
+#include <cstdio>
+#include "VME_Interface_Funcs.h"
+#include "VME_Interface_Defs.h"
+
+#define _HDF5USEDLL_
+
+int main() {
+
+	/**
+	Sample program which does a trial run using the VME_Interface.DLL library. This is the result of the tutorial from https://github.com/Smattacus/Tutorials/blob/master/Calling_DLL/cpp_file_calling_VME_Interface.md.
+
+	Or, alternatively, smattacus.github.io/Tutorials/Calling_DLL/
+	*/
+
+	std::cout << "This is a demo program. It will take a short acquisition on the SIS3820, get some data from it, and write it to ";
+	std::cout << "the test folder D:\\TestFiles\\Demo\\"  << std::endl;
+
+	__int32 handle;
+	int prescale = 9; //Prescale factor for VME. Sample rate = 10 MHz / (1 + prescale).
+	int counts = 1000000; // Number of acquisitions to take in a single data run.
+	VME::USB::Initialize_Connection(&handle); // Call a function in the VME_Interface.dll. This initializes the connection and places a hold on the A3818 driver.
+	VME::USB::STRUCK_MCS_Setup(handle, prescale, counts); // Assuming the connection was successfull, set up the SIS3820 for a data run.
+
+	Struck_info demo_run_info = { counts, prescale, 8, "D:\\TestFiles\\Demo\\", "demo_run", "now", 1 }; //Basic struct to hold parameters of data run.
+
+	//Allocate memory for the data run.
+	unsigned __int32 *data = (unsigned __int32 *)calloc(counts * 8, sizeof(unsigned __int32)); //Allocate data.
+
+	VME::USB::STRUCK_MCS_Acquire(handle, data, counts); //Acquire with the SIS3820.
+
+	VME::USB::HDF5_Write(data, "my_first_VME_Demo_Datafile.h5", &demo_run_info, 0, 32); //Write the data using the HDF5 library. 
+
+	VME::USB::Close_Connection(&handle); //Close the connection and release the A3818 driver for use by other programs.
+
+}
+```
