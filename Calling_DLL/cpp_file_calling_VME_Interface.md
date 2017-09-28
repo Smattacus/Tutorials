@@ -54,19 +54,23 @@ int main() {
 VS should highlight the lines "VME_Interface_Funcs.h" and "VME_Interface_Defs.h," since it doesn't know where they are. Let's fix that.
 
 5.  Right click on the Project name for "Demonstration_VME_Library_Call." Select "Properties"
-6.  In the Property Pages, go to the "C / C++" tab. In "General," open the "Additional Include Directories" box. Add the path "C:\Users\SKIFFLAB\Documents\Visual Studio 2015\Projects\VME_Interface\VME_Interface" as shown: ![](adding_include.png)
-7.  Do the same thing in step 6 for the CAEN VME libraries. These are the libraries that talk to the driver which connects to the VME board. Add the path "C:\Program Files\CAEN\VME\include."
-8. Try building the small program above - it should compile without any issues. This is a good way to check any included dependencies have been resolved.
-9. Now let's put code in that actually calls the VME. Here is the code:
+6.  In the Property Pages, go to the "C / C++" tab. For "Configuration" select "All Configurations" and for "Platform" select "x64" or "Active (x64)."
+7.  In "General," open the "Additional Include Directories" box. Add the path "C:\Users\SKIFFLAB\Documents\Visual Studio 2015\Projects\VME_Interface\VME_Interface" as shown: ![](adding_include.png)
+8.  Do the same thing in step 6 for the CAEN VME libraries. These are the libraries that talk to the driver which connects to the VME board. Add the path "C:\Program Files\CAEN\VME\include."
+9. Try building the small program above - it should compile without any issues. This is a good way to check any included dependencies have been resolved. Select the "Release" and "x64" configurations on the toolbar.
+10. Now let's put code in that actually calls the VME. Here is the code:
 
 ```c++
 
 #include <iostream>
 #include <cstdio>
+#include <ctime>
 #include "VME_Interface_Funcs.h"
 #include "VME_Interface_Defs.h"
 
 #define _HDF5USEDLL_
+
+#define STRING_BUFFER_LENGTH 256
 
 int main() {
 
@@ -94,13 +98,31 @@ int main() {
 
 	VME::USB::STRUCK_MCS_Acquire(handle, data, counts); //Acquire with the SIS3820.
 
-	VME::USB::HDF5_Write(data, "my_first_VME_Demo_Datafile.h5", &demo_run_info, 0, 32); //Write the data using the HDF5 library. 
+	///////////////////////////////////////////////////////////
+	//Stuff with a timestamp to make the filename unique.
+	//We do this by having the # of seconds since 2000.
+	char filename[STRING_BUFFER_LENGTH];
+	time_t timer;
+	time(&timer);
+
+	struct tm newyear;
+	newyear = *localtime(&timer);
+
+	newyear.tm_hour = 0; newyear.tm_min = 0; newyear.tm_sec = 0;
+	newyear.tm_mon = 0;  newyear.tm_mday = 1;
+	double seconds = difftime(timer, mktime(&newyear));
+	///////////////////////////////////////////////////////////
+
+	//Create a unique filename; otherwise HDF5 will throw an ugly error.
+	sprintf(filename, "D:\\TestFiles\\Demo\\my_fist_VMVE_Demo_Datafile_%f.h5", seconds);
+
+	VME::USB::HDF5_Write(data, filename, &demo_run_info, 0, 32); //Write the data using the HDF5 library. 
 
 	VME::USB::Close_Connection(&handle); //Close the connection and release the A3818 driver for use by other programs.
 
 }
 ```
-10.	Try building the code (Ctrl + Shift + B). You should get linker errors:
+11.	Try building the code (Ctrl + Shift + B). You should get linker errors:
 ```
 1>VME_Demo.obj : error LNK2001: unresolved external symbol "public: static int __cdecl VME::USB::HDF5_Write(unsigned int *,char *,struct Struck_info *,int,int)" (?HDF5_Write@USB@VME@@SAHPEAIPEADPEAUStruck_info@@HH@Z)
 1>VME_Demo.obj : error LNK2001: unresolved external symbol "public: static int __cdecl VME::USB::STRUCK_MCS_Acquire(int,unsigned int *,int)" (?STRUCK_MCS_Acquire@USB@VME@@SAHHPEAIH@Z)
@@ -108,6 +130,14 @@ int main() {
 1>VME_Demo.obj : error LNK2001: unresolved external symbol "public: static void __cdecl VME::USB::Close_Connection(int *)" (?Close_Connection@USB@VME@@SAXPEAH@Z)
 1>VME_Demo.obj : error LNK2001: unresolved external symbol "public: static int __cdecl VME::USB::Initialize_Connection(int *)" (?Initialize_Connection@USB@VME@@SAHPEAH@Z)
 ```
-11.	Tell MSVS where to link this code. In the Solution Explorer, in the "Demonstration_VME_Library_Call" Project, right click on "References," select "Add Reference," and check the box for "VME_Interface." This is why we add our new project to the
+12.	Tell MSVS where to link this code. In the Solution Explorer, in the "Demonstration_VME_Library_Call" Project, right click on "References," select "Add Reference," and check the box for "VME_Interface." This is why we add our new project to the
 already existing solution - it makes it easier to link to libraries.
 ![](add_ref.PNG)
+13.	Build it. It should build successfully.
+14.	Open a command prompt. Navigate to "C:\Users\SKIFFLAB\Documents\Visual Studio 2015\Projects\VME_Interface\x64\Release\" Run the program by typing "Demonstration_VME_Library_Call.exe" - note TAB should autocomplete this for you. Read the output,
+and if you did everything right a file should be written to D:\TestFiles\Demo.
+
+* * *
+
+15.	Now let's take this version of the build and put it in a separate folder. This way we can keep developing, and use this
+executable when we want to do other data acquisition tasks. Open a windows folder and navigate to the x64 build directory: C:\Users\SKIFFLAB\Documents\Visual Studio 2015\Projects\VME_Interface\x64\Release.
